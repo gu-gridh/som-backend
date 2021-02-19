@@ -9,15 +9,20 @@ if (!$morpheme) {
     exit;
 }
 
+$morpheme_row = select_one("SELECT Morpheme, Gloss, VowQual FROM Morphemes WHERE Morpheme = '$morpheme'");
+
 $types = select("SELECT Types.lpnr, gloss_item, en_trans
     FROM Types
     JOIN MorphToType ON MorphToType.lpnrType = Types.lpnr
-    WHERE Morpheme = '$morpheme'");
+    WHERE Morpheme = '$morpheme'
+    GROUP BY Types.lpnr");
 
 foreach ($types as &$type) {
-    $type['tokens'] = select("SELECT * FROM Tokens WHERE data_item = '{$type['gloss_item']}'");
+    $data_item = mysqli_real_escape_string($db, $type['gloss_item']);
+    $type['tokens'] = select("SELECT * FROM Tokens WHERE data_item = '$data_item'");
 }
 
 respond_json([
+    'morpheme' => $morpheme_row,
     'types' => $types,
 ]);

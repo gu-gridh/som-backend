@@ -16,6 +16,9 @@ $morphemes = select("SELECT Morphemes.Morpheme, Gloss, VowQual FROM MorphToType
     JOIN Morphemes ON MorphToType.Morpheme = Morphemes.Morpheme
     WHERE lpnrType = $type_id");
 
+$tokens = select("SELECT * FROM Tokens WHERE data_item = '{$type['gloss_item']}'");
+
 respond_json($type + [
     'morphemes' => $morphemes,
+    'tokens' => $tokens,
 ]);
