@@ -17,3 +17,15 @@ Backend for Somali speech corpus web app.
 8. Commit and push the resulting tsv files
 9. Run `import/import.sh` on the server
    * Fix and commit any remaining inconsistencies in tsv data.
+
+## Serving the API
+
+Create a `config.ini` file in this directory, containing at least the database password:
+
+    DB_PASS=<password>
+
+Serve the `db/` directory on a host with PHP and MySQL support. Do *not* allow access to `config.ini`.
+
+For development, you can use PHP's built-in web server:
+
+    php -S localhost:8030 -t db

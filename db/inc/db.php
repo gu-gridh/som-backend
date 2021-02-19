@@ -1,6 +1,6 @@
 <?php
 
-$config = parse_ini_file(__DIR__ . '/../config.ini') + [
+$config = parse_ini_file(__DIR__ . '/../../config.ini') + [
     // Defaults.
     'DB_HOST' => 'localhost',
     'DB_USER' => 'somaliska',
