@@ -9,11 +9,30 @@ if (!$s) {
     exit;
 }
 
-$rows = select("SELECT lpnr, gloss_item, en_trans FROM Types
+$types = select("SELECT lpnr, gloss_item, en_trans FROM Types
     WHERE gloss_item LIKE '%$s%'
     OR en_trans LIKE '%$s%'
+    ORDER BY gloss_item
     LIMIT 100");
 
+
+if ($types) {
+    $ids = implode(', ', array_map(function ($type) { return $type['lpnr']; }, $types));
+
+    $morphemes = select("SELECT lpnrType, Morpheme
+        FROM MorphToType
+        WHERE lpnrType IN ($ids)
+        ORDER BY lpnr");
+
+    foreach ($types as &$type) {
+        foreach ($morphemes as $morpheme) {
+            if ($morpheme['lpnrType'] == $type['lpnr']) {
+                $type['morphemes'][] = $morpheme['Morpheme'];
+            }
+        }
+    }
+}
+
 respond_json([
-    'types' => $rows,
+    'types' => $types,
 ]);
