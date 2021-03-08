@@ -6,6 +6,7 @@
 #   DB_USER=me import/import.sh
 
 DB_USER=${DB_USER:-root}
+DB_DATABASE=${DB_DATABASE:-som}
 DIR=${DIR:-$(pwd)/$(dirname $0)/data}
 
 # Read model definition (this will erase existing data).
@@ -23,4 +24,4 @@ for TSV in "$DIR"/*.tsv; do
 done
 
 # Make all SQL queries in one step to avoid having to enter the password multiple times.
-echo $QUERIES | mysql -u $DB_USER -p somaliska
+echo $QUERIES | mysql -u $DB_USER -p $DB_DATABASE

@@ -3,8 +3,8 @@
 $config = parse_ini_file(__DIR__ . '/../../config.ini') + [
     // Defaults.
     'DB_HOST' => 'localhost',
-    'DB_USER' => 'somaliska',
-    'DB_DATABASE' => 'somaliska',
+    'DB_USER' => 'som',
+    'DB_DATABASE' => 'som',
 ];
 
 $db = new mysqli($config['DB_HOST'], $config['DB_USER'], $config['DB_PASS'], $config['DB_DATABASE']);
