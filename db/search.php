@@ -20,9 +20,11 @@ if (is_null($types)) {
     exit;
 }
 
+// Add morpheme analysis if present.
 if ($types) {
     $ids = implode(', ', array_map(function ($type) { return $type['lpnr']; }, $types));
 
+    // Select all morphemes for all found types.
     $morphemes = select("SELECT lpnrType, Morpheme
         FROM MorphToType
         WHERE lpnrType IN ($ids)
@@ -37,6 +39,20 @@ if ($types) {
     }
 }
 
+// Add type highlight info.
+foreach ($types as &$type) {
+    foreach (['gloss_item', 'en_trans'] as $col) {
+        $start = strpos(strtolower($type[$col]), strtolower($s));
+        if ($start > -1) {
+            $type['highlight'] = [
+                'key' => $col,
+                'start' => $start,
+                'end' => $start + strlen($s),
+            ];
+        }
+    }
+}
+
 $morphemes = select("SELECT * from Morphemes
     WHERE REPLACE(Morpheme, '-', '') LIKE '$s%'
     OR gloss like '$s%'
@@ -45,6 +61,20 @@ $morphemes = select("SELECT * from Morphemes
 if (is_null($morphemes)) {
     respond_error('Error finding morphemes');
     exit;
+}
+
+// Add morpheme highlight info.
+foreach ($morphemes as &$morpheme) {
+    foreach (['Morpheme', 'Gloss'] as $col) {
+        $start = strpos(strtolower($morpheme[$col]), strtolower($s));
+        if ($start > -1) {
+            $morpheme['highlight'] = [
+                'key' => $col,
+                'start' => $start,
+                'end' => $start + strlen($s),
+            ];
+        }
+    }
 }
 
 respond_json([
