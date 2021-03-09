@@ -15,7 +15,8 @@ Backend for Somali speech corpus web app.
        for file in ../*.tab; do tr "\r" "\n" < $file | tr -d "\0\013" > import/data/$(basename $file .tab).tsv; done
 
 8. Commit and push the resulting tsv files
-9. Run `import/import.sh` on the server
+9. Run `import/import.sh`
+   * Global FILE privilege is needed, which may be unsuitable for a server. Then do import locally and export/import database dump.
    * Fix and commit any remaining inconsistencies in tsv data.
 
 ## Serving the API

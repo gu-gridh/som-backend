@@ -17,7 +17,10 @@ if ($db->connect_errno) {
 function select($query) {
     global $db;
     $res = $db->query($query);
-    $db->errno && error_log($db->error) && exit;
+    if ($db->errno) {
+        error_log($db->error);
+        return FALSE;
+    }
     return $res->fetch_all(MYSQLI_ASSOC);
 }
 
@@ -25,6 +28,9 @@ function select($query) {
 function select_one($query) {
     global $db;
     $res = $db->query($query);
-    $db->errno && error_log($db->error) && exit;
+    if ($db->errno) {
+        error_log($db->error);
+        return FALSE;
+    }
     return $res->fetch_assoc();
 }

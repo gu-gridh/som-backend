@@ -15,6 +15,10 @@ $types = select("SELECT lpnr, gloss_item, en_trans FROM Types
     ORDER BY gloss_item
     LIMIT 100");
 
+if (is_null($types)) {
+    respond_error('Error finding types');
+    exit;
+}
 
 if ($types) {
     $ids = implode(', ', array_map(function ($type) { return $type['lpnr']; }, $types));
@@ -33,6 +37,17 @@ if ($types) {
     }
 }
 
+$morphemes = select("SELECT * from Morphemes
+    WHERE REPLACE(Morpheme, '-', '') LIKE '$s%'
+    OR gloss like '$s%'
+    ORDER BY Morpheme");
+
+if (is_null($morphemes)) {
+    respond_error('Error finding morphemes');
+    exit;
+}
+
 respond_json([
     'types' => $types,
+    'morphemes' => $morphemes,
 ]);
