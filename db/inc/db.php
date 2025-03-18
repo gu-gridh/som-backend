@@ -2,7 +2,6 @@
 
 $config = parse_ini_file(__DIR__ . '/../../config.ini') + [
     // Defaults.
-    'DB_HOST' => 'localhost',
     'DB_USER' => 'som',
     'DB_DATABASE' => 'som',
 ];
@@ -12,6 +11,8 @@ $db = new mysqli($config['DB_HOST'], $config['DB_USER'], $config['DB_PASS'], $co
 if ($db->connect_errno) {
     error_log("Failed to connect to MySQL: " . $db->connect_error);
 }
+
+$db->set_charset("utf8");
 
 /** Perform a select query and return results as a generator. */
 function select($query) {
