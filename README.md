@@ -26,8 +26,9 @@ Backend for Somali speech corpus web app.
 
 ## Serving the API
 
-Create a `config.ini` file in this directory, containing at least the database password:
+Create a `config.ini` file in this directory, containing at least the database host and password:
 
+    DB_HOST=<host>
     DB_PASS=<password>
 
 Serve the `db/` directory on a host with PHP and MySQL support. Do *not* allow access to `config.ini`.
